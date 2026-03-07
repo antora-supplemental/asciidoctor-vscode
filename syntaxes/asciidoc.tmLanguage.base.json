@@ -858,15 +858,18 @@
       "patterns": [
         {
           "name": "markup.macro.block.general.asciidoc",
-          "match": "^(\\p{Word}+)(::)(\\S*?)(\\[)((?:\\\\\\]|[^\\]])*?)(\\])$",
+          "match": "^(\\s*)(\\p{Word}+)(::)(\\S*?)(\\[)((?:\\\\\\]|[^\\]])*?)(\\])(\\s*)$",
           "captures": {
             "1": {
-              "name": "entity.name.function.asciidoc"
+              "name": "meta.leading-whitespace.asciidoc"
             },
             "2": {
-              "name": "punctuation.separator.asciidoc"
+              "name": "entity.name.function.asciidoc"
             },
             "3": {
+              "name": "punctuation.separator.asciidoc"
+            },
+            "4": {
               "name": "markup.link.asciidoc",
               "patterns": [
                 {
@@ -874,10 +877,10 @@
                 }
               ]
             },
-            "4": {
+            "5": {
               "name": "punctuation.separator.asciidoc"
             },
-            "5": {
+            "6": {
               "name": "string.unquoted.asciidoc",
               "patterns": [
                 {
@@ -885,8 +888,11 @@
                 }
               ]
             },
-            "6": {
+            "7": {
               "name": "punctuation.separator.asciidoc"
+            },
+            "8": {
+              "name": "meta.trailing-whitespace.asciidoc"
             }
           }
         }
