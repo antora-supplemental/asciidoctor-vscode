@@ -16,7 +16,23 @@
       "outFiles": [
         "${workspaceFolder}/dist/**/*.js"
       ],
-      "preLaunchTask": "npm: dev",
+      "preLaunchTask": "dev",
+      "skipFiles": ["<node_internals>/**"],
+      "showAsyncStacks": true
+    },
+    {
+      "name": "Run Extension (only this extension)",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "--disable-extensions",
+        "--extensionDevelopmentPath=${workspaceFolder}",
+      ],
+      "outFiles": [
+        "${workspaceFolder}/dist/**/*.js"
+      ],
+      "preLaunchTask": "dev",
       "skipFiles": ["<node_internals>/**"],
       "showAsyncStacks": true
     },
@@ -34,7 +50,7 @@
       "outFiles": [
         "${workspaceFolder}/dist/src/test/**/*.js"
       ],
-      "preLaunchTask": "npm: pretest"
+      "preLaunchTask": "pretest"
     }
   ]
 }

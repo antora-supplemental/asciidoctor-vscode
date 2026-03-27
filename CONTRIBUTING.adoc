@@ -25,9 +25,47 @@ Before developing changes, install the following prerequisites:
 +
  $ npm install
 
++
+[NOTE]
+====
+If you use https://pnpm.io[pnpm] instead of npm (for example in a fork that sets `packageManager` in `package.json`), run `pnpm install` here instead. Script names in `package.json` stay the same. The checked-in `.vscode/tasks.json` uses `npm run` so the default flow matches this guide; you may change those commands to `pnpm run` locally if you prefer.
+====
+
 . Make changes (ideally on a separate branch).
 
 Testing is done differently on the desktop client and the web client.
+
+=== Run and Debug (F5) and the build task
+
+In the simplest terms:
+
+* Pressing *Run* > *Start Debugging* (or F5 with *Run Extension* selected) builds the extension, then launches a second VS Code window to try it.
+* The build step is wired through `.vscode/tasks.json` and `.vscode/launch.json` so it does not depend on editor-only “magic” task names.
+
+==== A bit more detail (what used to go wrong)
+
+For many years, `launch.json` pointed `preLaunchTask` at names like `npm: dev` and `npm: pretest`.
+
+Those strings are *not* npm script names from `package.json`.
+They are labels that Visual Studio Code’s *npm Scripts* integration *can* auto-generate when it scans `package.json` and that integration lists your scripts.
+
+That worked for some setups, but it was never defined in a checked-in `tasks.json` file—it depended on VS Code creating those tasks for you.
+
+If that integration does not register tasks under the `npm: …` names (for example when using another package manager, or when the Scripts view does not populate the same way), you can see an error such as `could not find the task 'npm: dev'` even though the `dev` script still exists in `package.json`.
+
+==== What we do instead
+
+The repository defines ordinary shell tasks in `.vscode/tasks.json` (labels `dev` and `pretest` that run `npm run dev` and `npm run pretest`).
+`launch.json` sets `preLaunchTask` to those same labels.
+
+That way, “press F5” always has a real task to run, independent of whether the implicit `npm: …` tasks appear.
+
+There is also a *Run Extension (only this extension)* configuration that passes `--disable-extensions` so the Extension Development Host does not load your other installed extensions; use it when you want a quieter Debug Console.
+
+==== Technical note (historical)
+
+In 2021, `launch.json` was updated to use `npm: dev`-style `preLaunchTask` values alongside script renames (`dev`, `pretest`).
+That matched the convention of the time; the mismatch with an explicit `tasks.json` (which used a different label, `build`) was easy to miss because the implicit tasks hid the gap.
 
 === Running the Desktop version
 

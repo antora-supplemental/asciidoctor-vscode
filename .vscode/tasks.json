@@ -2,9 +2,27 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "build",
+      "label": "dev",
       "type": "shell",
-      "command": "npm run dev"
+      "command": "npm run dev",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "pretest",
+      "type": "shell",
+      "command": "npm run pretest",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "problemMatcher": []
     }
   ]
 }
