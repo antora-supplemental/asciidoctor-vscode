@@ -23,15 +23,7 @@ const nodeConfig = {
   outfile: './dist/src/extension.js',
   platform: 'node',
   target: 'node20',
-  external: [
-    'vscode',
-    'applicationinsights-native-metrics',
-    '@opentelemetry/tracing',
-    '@asciidoctor/core',
-    '@asciidoctor/opal-runtime',
-    '@asciidoctor/docbook-converter',
-    'asciidoctor-kroki'
-  ],
+  external: ['vscode'],
 }
 
 // 2. Browser Extension Build
