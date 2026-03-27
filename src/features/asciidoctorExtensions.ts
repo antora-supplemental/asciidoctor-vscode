@@ -65,7 +65,7 @@ export class AsciidoctorExtensions {
       const extPath = extfile.fsPath
       try {
         delete require.cache[extPath]
-        const extjs = require(extPath)
+        const extjs = require(/* webpackIgnore: true */ extPath)
         extjs.register(registry)
       } catch (e) {
         vscode.window.showErrorMessage(extPath + ': ' + e.toString())
