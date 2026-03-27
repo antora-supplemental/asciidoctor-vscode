@@ -2164,6 +2164,21 @@ p {
     }
 }
 
+/* VS Code link styling: underline on hover only, no color change */
+#content a {
+    text-decoration: none
+}
+
+#content a:hover,
+#content a:focus {
+    text-decoration: underline
+}
+
+/* Suppress the base stylesheet's hover color-darkening for light theme */
+a:hover, a:focus {
+    color: inherit
+}
+
 /* VS Code dark theme overrides */
 .vscode-dark code,
 .vscode-dark kbd {
@@ -2189,6 +2204,16 @@ p {
 
 .vscode-dark .prettyprint {
     background: var(--vscode-editor-background, #1e1e1e);
+}
+
+/* VS Code dark theme link colors (no hover color change) */
+.vscode-dark #content a {
+    color: var(--vscode-textLink-foreground, #3794ff)
+}
+
+.vscode-dark a:hover,
+.vscode-dark a:focus {
+    color: inherit
 }
 
 /* VS Code high contrast theme overrides */
