@@ -8,6 +8,7 @@ module.exports = {
     pre: './preview-src/pre.ts',
   },
   module: {
+    exprContextCritical: false,
     rules: [
       {
         test: /\.tsx?$/,
