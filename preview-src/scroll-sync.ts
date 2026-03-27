@@ -20,20 +20,22 @@ export interface CodeLineElement {
 const getCodeLineElements = (() => {
   let elements: CodeLineElement[]
   return () => {
+    // Invalidate cache if DOM was replaced (e.g. preview refresh)
+    if (elements?.length && !document.contains(elements[0].element)) {
+      elements = undefined!
+    }
     if (!elements) {
       elements = Array.prototype.map
         .call(
           document.querySelectorAll(
             'div[class^="data-line-"], div[class*=" data-line-"]',
           ),
-          //document.getElementsByClassName('code-line'),
           (element: any) => {
             const num = element.className
               .split(' ')
               .pop()
               .match(/data-line-(\d+)/)[1]
             const line = parseInt(num)
-            //const line = +element.getAttribute('data-line');
             return { element, line }
           },
         )
@@ -98,6 +100,7 @@ export function getLineElementsAtPageOffset(offset: number): {
 
 /**
  * Attempt to reveal the element for a source line in the editor.
+ * @param line - 0-based editor line number (possibly fractional from getVisibleLine).
  */
 export function scrollToRevealSourceLine(line: number) {
   const { previous, next } = getElementsForSourceLine(line)
@@ -105,14 +108,16 @@ export function scrollToRevealSourceLine(line: number) {
     let scrollTo = 0
     const rect = previous.element.getBoundingClientRect()
     const previousTop = rect.top
+    // previous.line / next.line are 1-based (from data-line-N); convert for interpolation
+    const line1Based = line + 1
     if (next && next.line !== previous.line) {
       // Between two elements. Go to percentage offset between them.
       const betweenProgress =
-        (line - previous.line) / (next.line - previous.line)
+        (line1Based - previous.line) / (next.line - previous.line)
       const elementOffset =
         next.element.getBoundingClientRect().top - previousTop
       scrollTo = window.scrollY + previousTop + betweenProgress * elementOffset
-    } else if (line === 0) {
+    } else if (line <= 0) {
       scrollTo = 0
     } else {
       scrollTo = window.scrollY + previousTop
@@ -121,23 +126,27 @@ export function scrollToRevealSourceLine(line: number) {
   }
 }
 
+/**
+ * Get the 0-based editor line number for a given scroll offset.
+ * (data-line-N in the DOM is 1-based; we return 0-based for the editor.)
+ */
 export function getEditorLineNumberForPageOffset(offset: number) {
   const { previous, next } = getLineElementsAtPageOffset(offset)
   if (previous) {
     const previousBounds = previous.element.getBoundingClientRect()
     const offsetFromPrevious = offset - window.scrollY - previousBounds.top
+    let line1Based: number
     if (next) {
       const progressBetweenElements =
         offsetFromPrevious /
         (next.element.getBoundingClientRect().top - previousBounds.top)
-      const line =
+      line1Based =
         previous.line + progressBetweenElements * (next.line - previous.line)
-      return clampLine(line)
     } else {
       const progressWithinElement = offsetFromPrevious / previousBounds.height
-      const line = previous.line + progressWithinElement
-      return clampLine(line)
+      line1Based = previous.line + progressWithinElement
     }
+    return clampLine(line1Based - 1)
   }
   return null
 }

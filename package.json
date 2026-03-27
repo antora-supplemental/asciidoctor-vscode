@@ -595,7 +595,8 @@
       }
     },
     "asciidoc.previewStyles": [
-      "./media/editor-selection.css"
+      "./media/editor-selection.css",
+      "./media/preview-tabs.css"
     ],
     "asciidoc.previewScripts": [
       "./dist/index.js"
