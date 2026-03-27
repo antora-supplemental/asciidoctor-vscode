@@ -10,6 +10,7 @@ import {
   scrollToRevealSourceLine,
 } from './scroll-sync'
 import { getData, getSettings } from './settings'
+import { initTabs } from './tabs'
 
 import throttle = require('lodash.throttle')
 
@@ -42,6 +43,8 @@ window.onload = () => {
 }
 
 onceDocumentLoaded(() => {
+  initTabs()
+
   const windowNeedsRestoration = !settings.preservePreviewWhenHidden
 
   if (windowNeedsRestoration) {
