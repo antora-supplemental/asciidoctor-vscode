@@ -48,6 +48,8 @@ const browserConfig = {
     'https': path.resolve(__dirname, 'tasks/empty.js'),
     'zlib': path.resolve(__dirname, 'tasks/empty.js'),
     'assert': path.resolve(__dirname, 'tasks/empty.js'),
+    // fast-glob (asciidoctor-opal-runtime 0.3.4+) requires 'stream'; like fs, it is unused in the web extension
+    'stream': path.resolve(__dirname, 'tasks/empty.js'),
     'worker_threads': require.resolve('worker-thread'),
   },
   plugins: [

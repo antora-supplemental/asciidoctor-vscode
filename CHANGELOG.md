@@ -13,6 +13,7 @@
 * Switch from `vscode-nls` (deprecated) to `vscode-l10n` (#955)
 * Update node to v22 (#934)
 * Replace eslint by biome (#954)
+* Upgrade `@asciidoctor/core` to 2.2.9, whose Opal runtime (0.3.4) replaces the deprecated `glob@7` with `fast-glob`, and drop the unused `@asciidoctor/opal-runtime` GitHub dependency
 
 ## 3.4.4 (2025-07-14)
 
